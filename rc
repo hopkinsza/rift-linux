@@ -1,0 +1,37 @@
+#!/bin/mksh
+# vim: syntax=sh
+
+# mount pseudo-filesystems on boot
+if mountpoint -q /proc; then
+	:
+else
+	mount -t proc  proc /proc
+	mount -t sysfs sys  /sys
+	mount -t devtmpfs devtmpfs /dev
+	mkdir /dev/pts
+	mount -t devpts devpts /dev/pts
+	mount -t tmpfs tmpfs /tmp
+	mount -o remount,rw /
+
+	printf -- "boot took $(cut -d' ' -f1 /proc/uptime) secs\n"
+fi
+
+print '
++------------------------------+
+|  welcome to multiuser mode!  |
++------------------------------+
+'
+
+PATH=/usr/local/bin:/usr/local/sbin
+PATH=${PATH}:/usr/bin:/usr/sbin
+PATH=${PATH}:/bin:/sbin
+export PATH
+
+# ignore signals, so we don't die to halt/poweroff/reboot sending us
+# TERM or HUP
+trap '' INT HUP TERM
+
+while :; do
+	print 'new shell:'
+	PS1='$(pwd) # ' /bin/mksh
+done
