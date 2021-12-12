@@ -18,6 +18,28 @@ fi
 export LC_ALL=C
 umask 022
 
+####
+#### Directory to build in
+####
+
+d=
+if [ $# -gt 1 ]; then
+	errx 'too many args'
+elif [ $# -eq 1 ]; then
+	d="$1"
+else
+	d=rift-root
+fi
+
+mkdir $d
+
+list="`ls -A $d`"
+if [ "$list" = 'lost+found' ]; then
+	:
+elif [ -n "$list" ]; then
+	errx 1 "$d is not empty"
+fi
+
 
 ####
 #### Functions
@@ -74,11 +96,7 @@ populate-var () {
 #### Set up the filesystem
 ####
 
-d=rift-root
-
-[[ -e $d ]] && errx 1 "$d already exists"
-
-mkdir $d
+mkdir $d 2>/dev/null
 cd $d
 
 populate root
