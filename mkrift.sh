@@ -82,7 +82,7 @@ populate () {
 
 populate-var () {
 	mkdir backups cron log mail run spool tmp
-	ln -s ../run ./run
+	ln -s ./run ../run
 
 	# more possibilities:
 	# cache, crash, games, msgs
