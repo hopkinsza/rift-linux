@@ -1,16 +1,15 @@
 #!/bin/sh
 
-warnx() {
+warn() {
 	printf -- "$0: "
 	printf -- "$*\n"
 }
-errx() {
-	if [ $# -lt 2 ]; then
-		warnx 'errx: not enough args'
+fatal() {
+	if [ $# -eq 0 ]; then
+		warn 'fatal error'
+		exit 1
+	else
+		warn "$*"
 		exit 1
 	fi
-
-	e=$1; shift
-	warnx "$*"
-	exit $e
 }
