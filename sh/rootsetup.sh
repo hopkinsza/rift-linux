@@ -7,9 +7,9 @@ source err.subr
 #### Functions
 ####
 
-populate () {
-	if [ $# -ne 1 ]; then
-		errx 'populate(): wrong number of args'
+function populate {
+	if [[ $# != 1 ]]; then
+		fatal 'populate(): wrong number of args'
 	fi
 
 	# common to all
@@ -37,12 +37,12 @@ populate () {
 		mkdir etc
 		;;
 	*)
-		errx 'populate(): unrecognized arg'
+		fatal 'populate(): unrecognized arg'
 		;;
 	esac
 }
 
-populate-var () {
+function populate-var {
 	mkdir backups cron log mail run spool tmp
 	ln -s ./run ../run
 
